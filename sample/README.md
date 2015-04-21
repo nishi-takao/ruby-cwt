@@ -3,14 +3,16 @@
 ## How to run
 Just run cwt_test.rb.
 
-    $ cwt_test.rb
+    $ ./cwt_test.rb
 
 ## outputs
 + i.dat : source data (Sin curve, two perioda cycles/64 points)
+
     sample_no. value
      :
 
 + o.dat : CWT output values (noctave=8, nvoice=4)
+
     sample_00 Frequency_Division(octave*voice) real imag. abs.
      :
     (empty line)
