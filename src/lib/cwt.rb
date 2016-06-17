@@ -1,7 +1,8 @@
+# coding: utf-8
 #
 # Continuous wavelet transform using Morlet wavelet for NArray
 #
-# Time-stamp: <2016-06-17 14:20:31 zophos>
+# Time-stamp: <2016-06-17 14:35:33 zophos>
 #
 # Copyright (c) 2013 NISHI, Takao <zophos@ni.aist.go.jp> AIST
 # All rights reserved.
@@ -31,12 +32,22 @@ class NVector
                                            w0)[0...self.size,
                                                true]
 
-        freq_adj=(w0+Math::sqrt(2+w0*w0))/(4*Math::PI)
+        #
+        # Wavelet scale and Fourier frequency trasformation factor
+        #
+        # Torrence, C. and G.P. Compo
+        # "A Practical Guide to Wavelet Analysis",
+        # Bull. Am. Meteorol. Soc., 79(1), pp.61-–78, 1998.
+        # http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf
+        #
+        # 3.h Wavelet scale and Fourier frequency
+        #
+        freq_fact=(w0+Math::sqrt(2+w0*w0))/(4*Math::PI)
 
         o.instance_variable_set(:@noctave,noctave)
         o.instance_variable_set(:@nvoice,nvoice)
         o.instance_variable_set(:@w0,w0)
-        o.instance_variable_set(:@freq_adjustment_coeff,freq_adj)
+        o.instance_variable_set(:@freq_trans_factor,freq_fact)
 
         o.instance_eval(<<_EOS_
 def noctave
@@ -48,14 +59,14 @@ end
 def w0
     @w0
 end
-def freq_adjustment_coeff
-    @freq_adjustment_coeff
+def freq_trans_factor
+    @freq_trans_factor
 end
 def scale2freq(s)
-    (2.0**(s.to_f/@nvoice+1.0))/@freq_adjustment_coeff
+    (2.0**(s.to_f/@nvoice+1.0))/@freq_trans_factor
 end
 def freq2scale(f)
-    (Math.log2(f*@freq_adjustment_coeff)-1)*@nvoice
+    (Math.log2(f*@freq_trans_factor)-1)*@nvoice
 end
 _EOS_
                        )
