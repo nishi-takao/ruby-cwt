@@ -1,7 +1,7 @@
 #
 # Continuous wavelet transform using Morlet wavelet for NArray
 #
-# Time-stamp: <2013-02-18 10:19:18 zophos>
+# Time-stamp: <2016-06-17 14:20:31 zophos>
 #
 # Copyright (c) 2013 NISHI, Takao <zophos@ni.aist.go.jp> AIST
 # All rights reserved.
@@ -26,7 +26,40 @@ class NVector
             raise ArgumentError,'noctave must be equal to 2**n.'
         end
 
-        _adjust_shape_for_cwt.cwt_morlet(noctave,nvoice,w0)[0...self.size,true]
+        o=_adjust_shape_for_cwt.cwt_morlet(noctave,
+                                           nvoice,
+                                           w0)[0...self.size,
+                                               true]
+
+        freq_adj=(w0+Math::sqrt(2+w0*w0))/(4*Math::PI)
+
+        o.instance_variable_set(:@noctave,noctave)
+        o.instance_variable_set(:@nvoice,nvoice)
+        o.instance_variable_set(:@w0,w0)
+        o.instance_variable_set(:@freq_adjustment_coeff,freq_adj)
+
+        o.instance_eval(<<_EOS_
+def noctave
+    @noctave
+end
+def nvoice
+    @nvoice
+end
+def w0
+    @w0
+end
+def freq_adjustment_coeff
+    @freq_adjustment_coeff
+end
+def scale2freq(s)
+    (2.0**(s.to_f/@nvoice+1.0))/@freq_adjustment_coeff
+end
+def freq2scale(f)
+    (Math.log2(f*@freq_adjustment_coeff)-1)*@nvoice
+end
+_EOS_
+                       )
+        o
     end
 
     private
