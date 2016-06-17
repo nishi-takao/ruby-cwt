@@ -1,8 +1,7 @@
-# coding: utf-8
 #
 # Continuous wavelet transform using Morlet wavelet for NArray
 #
-# Time-stamp: <2016-06-17 14:35:33 zophos>
+# Time-stamp: <2016-06-17 15:17:30 zophos>
 #
 # Copyright (c) 2013 NISHI, Takao <zophos@ni.aist.go.jp> AIST
 # All rights reserved.
@@ -37,7 +36,7 @@ class NVector
         #
         # Torrence, C. and G.P. Compo
         # "A Practical Guide to Wavelet Analysis",
-        # Bull. Am. Meteorol. Soc., 79(1), pp.61-–78, 1998.
+        # Bull. An. Meteorol. Soc., 79(1), pp.61--78, 1998.
         # http://paos.colorado.edu/research/wavelets/bams_79_01_0061.pdf
         #
         # 3.h Wavelet scale and Fourier frequency
